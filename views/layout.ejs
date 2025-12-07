@@ -2,21 +2,29 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>EASY-Tarefas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EASY-Tarefa</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
   <nav class="navbar">
-    <a href="/">Início</a>
-    <a href="/sobre">Sobre</a>
-    <a href="/logout">Sair</a>
+    <div class="nav-brand">EASY-Tarefa</div>
+    <div class="nav-links">
+      <a href="/dashboard">Início</a>
+      <a href="/sobre">Sobre</a>
+      <a href="/logout" class="btn-logout">Sair</a>
+    </div>
   </nav>
 
-  <div class="container">
+  <main>
     <%- body %>
-  </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 EASY-Tarefa - Gerenciador de Tarefas</p>
+  </footer>
 
 </body>
 </html>

@@ -35,6 +35,13 @@ router.post('/projetos', async (req, res) => {
 });
 
 // --- TAREFAS ---
+// Listar todas as tarefas
+router.get('/tarefas', async (req, res) => {
+  const rows = await db.all('SELECT * FROM tarefa ORDER BY criado_em DESC');
+  res.json(rows);
+});
+
+// Listar tarefas de um projeto específico
 router.get('/projetos/:id/tarefas', async (req, res) => {
   const id = req.params.id;
   const rows = await db.all('SELECT * FROM tarefa WHERE id_projeto = ?', [id]);
@@ -43,10 +50,28 @@ router.get('/projetos/:id/tarefas', async (req, res) => {
 
 router.post('/tarefas', async (req, res) => {
   const { titulo, descricao, prioridade, status, prazo, id_projeto } = req.body;
+  
+  if (!titulo) {
+    return res.status(400).json({ error: 'Título é obrigatório' });
+  }
+  
   try {
+    // Se não informar id_projeto, usa o projeto padrão (id=1)
     const r = await db.run('INSERT INTO tarefa (titulo,descricao,prioridade,status,prazo,id_projeto) VALUES (?,?,?,?,?,?)',
-      [titulo, descricao, prioridade, status, prazo, id_projeto]);
+      [titulo, descricao || '', prioridade || 'media', status || 'pendente', prazo || null, id_projeto || 1]);
     res.status(201).json({ id: r.lastID });
+  } catch (e) { 
+    console.error('Erro ao criar tarefa:', e.message);
+    res.status(400).json({ error: e.message }); 
+  }
+});
+
+// Deletar tarefa
+router.delete('/tarefas/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const r = await db.run('DELETE FROM tarefa WHERE id = ?', [id]);
+    res.json({ changes: r.changes });
   } catch (e) { res.status(400).json({ error: e.message }); }
 });
 

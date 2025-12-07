@@ -1,3 +1,27 @@
-<% layout('layout') -%>
-<h1><%= title %></h1>
-<p><%= descricao %></p>
+<div class="container">
+  <div class="sobre-section">
+    <h1><%= title %></h1>
+    <p class="descricao"><%= descricao %></p>
+    
+    <div class="sobre-content">
+      <h2>Funcionalidades</h2>
+      <ul class="features-list">
+        <li>✓ Adicionar, editar e excluir tarefas</li>
+        <li>✓ Definir prioridades (baixa, média, alta)</li>
+        <li>✓ Gerenciar status (pendente, em andamento, concluída)</li>
+        <li>✓ Filtrar tarefas por status</li>
+        <li>✓ Sistema de autenticação seguro</li>
+        <li>✓ Interface responsiva e intuitiva</li>
+      </ul>
+
+      <h2>Tecnologias Utilizadas</h2>
+      <ul class="tech-list">
+        <li>Node.js + Express</li>
+        <li>SQLite</li>
+        <li>EJS (Templates)</li>
+        <li>CSS3</li>
+        <li>JavaScript ES6+</li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login | EASY-Tarefa</title>
+  <title>Cadastro | EASY-Tarefa</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -15,20 +15,21 @@
 
   <div class="login-card">
     <h2>EASY-Tarefa</h2>
-    <p>Gerenciador de Tarefas</p>
+    <p>Criar nova conta</p>
   
     <% if (typeof erro !== "undefined" && erro) { %>
       <p class="erro"><%= erro %></p>
     <% } %>
 
-    <form action="/login" method="POST">
+    <form action="/cadastro" method="POST">
+      <input type="text" name="nome" placeholder="Nome completo" required>
       <input type="email" name="email" placeholder="Email" required>
       <input type="password" name="senha" placeholder="Senha" required>
-      <button type="submit">Entrar</button>
+      <button type="submit">Cadastrar</button>
     </form>
 
     <p style="margin-top: 15px; font-size: 14px;">
-      Não tem uma conta? <a href="/cadastro">Cadastre-se</a>
+      Já tem uma conta? <a href="/login">Fazer login</a>
     </p>
   </div>
 
