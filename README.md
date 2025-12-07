@@ -186,7 +186,6 @@ Projeto desenvolvido para:
 
 ## 👨‍💻 Desenvolvedores
 
-| | |
 |---|---|
 | **Joel de Araújo Pereira Junior** | **Mateus Souza e Silva** |
 
