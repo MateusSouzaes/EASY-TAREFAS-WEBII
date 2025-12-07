@@ -183,6 +183,7 @@ Projeto desenvolvido para:
 <div align="center">
 
 **Desenvolvedores**
+
 **| Joel de Araújo Pereira Junior | Mateus Souza e Silva| 2025**
 
 </div>
