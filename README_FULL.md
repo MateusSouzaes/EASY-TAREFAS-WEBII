@@ -177,11 +177,12 @@ npm run reset-db   # Resetar banco com seed
 Projeto desenvolvido para:
 - Desenvolvimento Web II
 - Programação com Acesso a Banco de Dados
+- Interface com Usuário
 
 ---
 
 <div align="center">
 
-**Desenvolvido por| Joel de Araújo Pereira Junior | Mateus Souza e Silva| 2025**
+**Desenvolvido com 💜 | Mateus Souza | 2025**
 
 </div>
