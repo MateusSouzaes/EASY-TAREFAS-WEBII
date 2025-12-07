@@ -180,10 +180,19 @@ Projeto desenvolvido para:
 
 ---
 
+---
+
 <div align="center">
 
-**Desenvolvedores**
+## 👨‍💻 Desenvolvedores
 
-**| Joel de Araújo Pereira Junior | Mateus Souza e Silva| 2025**
+| | |
+|---|---|
+| **Joel de Araújo Pereira Junior** | **Mateus Souza e Silva** |
+
+**2025** | IFRO - Instituto Federal de Ensino e Tecnologia de Rondônia - Campus Ji-Paraná
+
+---
+
 
 </div>
