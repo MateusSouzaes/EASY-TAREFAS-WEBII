@@ -1,39 +1,376 @@
 <div class="container">
   <div class="header">
-    <h1>EASY-Tarefa</h1>
+    <h1>Dashboard</h1>
     <p>Bem-vindo, <strong><%= usuario.nome %></strong></p>
   </div>
 
-  <div class="add-task-section">
-    <h2>Adicionar Nova Tarefa</h2>
-    <div class="form-group">
-      <input type="text" id="titulo" placeholder="Nome da tarefa" class="input-task">
-      <textarea id="descricao" placeholder="Descrição (opcional)" class="textarea-task"></textarea>
-      <div class="form-row">
-        <select id="prioridade" class="select-task">
-          <option value="baixa">Prioridade Baixa</option>
-          <option value="media" selected>Prioridade Média</option>
-          <option value="alta">Prioridade Alta</option>
-        </select>
-        <button id="btnAdicionarTarefa" class="btn btn-primary">Adicionar Tarefa</button>
+  <!-- Gráficos de Estatísticas -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <!-- Gráfico de Status -->
+      <div class="chart-container">
+        <h2>📊 Status das Tarefas</h2>
+        <div class="chart-wrapper">
+          <canvas id="statusChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Gráfico de Projetos -->
+      <div class="chart-container">
+        <h2>📁 Tarefas por Projeto</h2>
+        <div class="chart-wrapper">
+          <canvas id="projectsChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Gráfico de Distribuição por Status -->
+      <div class="chart-container">
+        <h2>📈 Distribuição por Status</h2>
+        <div class="chart-wrapper">
+          <canvas id="distributionChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Estatísticas Rápidas -->
+      <div class="stats-cards">
+        <div class="stat-card stat-pendente">
+          <div class="stat-value" id="statPendentes">0</div>
+          <div class="stat-label">Pendentes</div>
+        </div>
+        <div class="stat-card stat-em_andamento">
+          <div class="stat-value" id="statEmAndamento">0</div>
+          <div class="stat-label">Em Andamento</div>
+        </div>
+        <div class="stat-card stat-concluida">
+          <div class="stat-value" id="statConcluidas">0</div>
+          <div class="stat-label">Concluídas</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="filters-section">
-    <h2>Filtrar Tarefas</h2>
-    <div class="filter-buttons">
-      <button class="btn btn-filter active" data-filter="todas" id="btn-todas">Todas</button>
-      <button class="btn btn-filter" data-filter="pendente" id="btn-pendente">Pendentes</button>
-      <button class="btn btn-filter" data-filter="em_andamento" id="btn-em_andamento">Em Andamento</button>
-      <button class="btn btn-filter" data-filter="concluida" id="btn-concluida">Concluídas</button>
+  <div class="dashboard-grid">
+    <!-- Projetos Recentes -->
+    <div class="dashboard-section">
+      <div class="section-header">
+        <h2>📁 Projetos Recentes</h2>
+        <a href="/projetos" class="btn btn-primary">Ver Todos</a>
+      </div>
+      <div class="dashboard-cards">
+        <% if (projetos && projetos.length > 0) { %>
+          <% projetos.forEach(projeto => { %>
+            <div class="dashboard-card">
+              <h3><%= projeto.titulo %></h3>
+              <p class="card-desc"><%= projeto.descricao || 'Sem descrição' %></p>
+              <a href="/projetos/<%= projeto.id %>/tarefas" class="btn btn-secondary">Ver Tarefas</a>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="no-tasks">Nenhum projeto. <a href="/projetos">Criar primeiro projeto</a></p>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Tarefas Recentes -->
+    <div class="dashboard-section">
+      <div class="section-header">
+        <h2>📋 Tarefas Recentes</h2>
+      </div>
+      <div class="dashboard-list">
+        <% if (tarefas && tarefas.length > 0) { %>
+          <% tarefas.forEach(tarefa => { %>
+            <div class="dashboard-item prioridade-<%= tarefa.prioridade %> status-<%= tarefa.status %>">
+              <div class="item-content">
+                <strong><%= tarefa.titulo %></strong>
+                <span class="item-badge"><%= tarefa.projeto || 'Sem projeto' %></span>
+              </div>
+              <div class="item-badges">
+                <span class="badge badge-prioridade"><%= tarefa.prioridade %></span>
+                <span class="badge badge-status">
+                  <%= tarefa.status === 'pendente' ? 'Pendente' : tarefa.status === 'em_andamento' ? 'Em Andamento' : 'Concluída' %>
+                </span>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="no-tasks">Nenhuma tarefa cadastrada</p>
+        <% } %>
+      </div>
     </div>
   </div>
 
-  <div class="tasks-section">
-    <h2>Lista de Tarefas</h2>
-    <div id="lista" class="tasks-list"></div>
+  <div class="dashboard-actions">
+    <a href="/projetos" class="btn btn-primary btn-large">➕ Criar Novo Projeto</a>
   </div>
 </div>
 
-<script src="/js/app.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="/js/dashboard-charts.js"></script>
+
+<style>
+.stats-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.chart-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.chart-container h2 {
+  color: #667eea;
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 300px;
+  margin-top: 1rem;
+}
+
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  grid-column: 1 / -1;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  border-top: 4px solid #667eea;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.stat-card.stat-pendente {
+  border-top-color: #95a5a6;
+}
+
+.stat-card.stat-em_andamento {
+  border-top-color: #3498db;
+}
+
+.stat-card.stat-concluida {
+  border-top-color: #27ae60;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.dashboard-section {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #ddd;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+  transition: transform 0.2s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.dashboard-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.card-desc {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dashboard-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid #667eea;
+}
+
+.dashboard-item.prioridade-alta {
+  border-left-color: #e74c3c;
+}
+
+.dashboard-item.prioridade-media {
+  border-left-color: #f39c12;
+}
+
+.dashboard-item.prioridade-baixa {
+  border-left-color: #3498db;
+}
+
+.item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.item-badge {
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.item-badges {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dashboard-item .badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+}
+
+.dashboard-item .badge-prioridade {
+  background: #3498db;
+}
+
+.dashboard-item.prioridade-alta .badge-prioridade {
+  background: #e74c3c;
+}
+
+.dashboard-item.prioridade-media .badge-prioridade {
+  background: #f39c12;
+}
+
+.dashboard-item.prioridade-baixa .badge-prioridade {
+  background: #3498db;
+}
+
+.dashboard-item .badge-status {
+  background: #95a5a6;
+}
+
+.dashboard-item.status-em_andamento .badge-status {
+  background: #3498db;
+}
+
+.dashboard-item.status-concluida .badge-status {
+  background: #27ae60;
+}
+
+.dashboard-item.status-concluida {
+  opacity: 0.7;
+}
+
+.dashboard-actions {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.btn-large {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  
+  .dashboard-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+  }
+}
+</style>

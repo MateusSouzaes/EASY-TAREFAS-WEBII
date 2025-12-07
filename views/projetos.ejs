@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="header">
+    <h1>Meus Projetos</h1>
+    <p>Organize suas tarefas em projetos</p>
+  </div>
+
+  <div class="add-task-section">
+    <h2>Criar Novo Projeto</h2>
+    <div class="form-group">
+      <input type="text" id="tituloProjeto" placeholder="Nome do projeto" class="input-task">
+      <textarea id="descricaoProjeto" placeholder="Descrição do projeto (opcional)" class="textarea-task"></textarea>
+      <div class="form-row">
+        <input type="date" id="dataInicio" class="input-task" placeholder="Data de Início">
+        <input type="date" id="dataFim" class="input-task" placeholder="Data de Término">
+      </div>
+      <button id="btnCriarProjeto" class="btn btn-primary">Criar Projeto</button>
+    </div>
+  </div>
+
+  <div class="tasks-section">
+    <h2>Lista de Projetos</h2>
+    <div id="listaProjetos" class="tasks-list">
+      <% if (projetos && projetos.length > 0) { %>
+        <% projetos.forEach(projeto => { %>
+          <div class="task-card">
+            <div class="task-header">
+              <h3><%= projeto.titulo %></h3>
+              <div class="task-badges">
+                <span class="badge badge-status">Dono: <%= projeto.dono %></span>
+              </div>
+            </div>
+            <% if (projeto.descricao) { %>
+              <p class="task-desc"><%= projeto.descricao %></p>
+            <% } %>
+            <% if (projeto.data_inicio || projeto.data_fim) { %>
+              <p class="task-desc">
+                <strong>Período:</strong> 
+                <%= projeto.data_inicio ? new Date(projeto.data_inicio).toLocaleDateString('pt-BR') : '...' %> até 
+                <%= projeto.data_fim ? new Date(projeto.data_fim).toLocaleDateString('pt-BR') : '...' %>
+              </p>
+            <% } %>
+            <div class="task-actions">
+              <a href="/projetos/<%= projeto.id %>/tarefas" class="btn btn-primary">Ver Tarefas</a>
+              <button class="btn btn-warning btn-editar" data-projeto-id="<%= projeto.id %>" data-titulo="<%= projeto.titulo %>" data-descricao="<%= projeto.descricao || '' %>" data-data-inicio="<%= projeto.data_inicio || '' %>" data-data-fim="<%= projeto.data_fim || '' %>">Editar</button>
+              <button class="btn btn-delete" data-projeto-id="<%= projeto.id %>">Excluir</button>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="no-tasks">Nenhum projeto criado ainda. Crie seu primeiro projeto!</p>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Editar Projeto -->
+<div id="modalEditarProjeto" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Editar Projeto</h2>
+      <span class="close" onclick="fecharModalEditar()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Título do Projeto:</label>
+        <input type="text" id="editTituloProjeto" class="input-task" placeholder="Nome do projeto">
+      </div>
+      <div class="form-group">
+        <label>Descrição:</label>
+        <textarea id="editDescricaoProjeto" class="textarea-task" placeholder="Descrição do projeto"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Data de Início:</label>
+        <input type="date" id="editDataInicio" class="input-task">
+      </div>
+      <div class="form-group">
+        <label>Data de Término:</label>
+        <input type="date" id="editDataFim" class="input-task">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="fecharModalEditar()">Cancelar</button>
+        <button class="btn btn-primary" onclick="salvarEdicaoProjeto()">Salvar Alterações</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/projetos.js"></script>
+

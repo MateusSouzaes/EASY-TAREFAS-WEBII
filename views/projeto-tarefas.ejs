@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="header">
+    <h1><%= projeto.titulo %></h1>
+    <p><%= projeto.descricao || 'Sem descrição' %></p>
+    <a href="/projetos" class="btn btn-secondary" style="margin-top: 1rem;">← Voltar aos Projetos</a>
+  </div>
+
+  <div class="add-task-section">
+    <h2>Adicionar Nova Tarefa</h2>
+    <div class="form-group">
+      <input type="text" id="titulo" placeholder="Nome da tarefa" class="input-task">
+      <textarea id="descricao" placeholder="Descrição (opcional)" class="textarea-task"></textarea>
+      <div class="form-row">
+        <select id="prioridade" class="select-task">
+          <option value="baixa">Prioridade Baixa</option>
+          <option value="media" selected>Prioridade Média</option>
+          <option value="alta">Prioridade Alta</option>
+        </select>
+        <button id="btnAdicionarTarefa" class="btn btn-primary" data-projeto-id="<%= projeto.id %>">Adicionar Tarefa</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="filters-section">
+    <h2>Filtrar Tarefas</h2>
+    <div class="filter-buttons">
+      <button class="btn btn-filter active" data-filter="todas" id="btn-todas">Todas</button>
+      <button class="btn btn-filter" data-filter="pendente" id="btn-pendente">Pendentes</button>
+      <button class="btn btn-filter" data-filter="em_andamento" id="btn-em_andamento">Em Andamento</button>
+      <button class="btn btn-filter" data-filter="concluida" id="btn-concluida">Concluídas</button>
+    </div>
+  </div>
+
+  <div class="tasks-section">
+    <h2>Lista de Tarefas</h2>
+    <div id="lista" class="tasks-list"></div>
+  </div>
+</div>
+
+<!-- Modal de Comentários -->
+<div id="modalComentarios" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitulo">Comentários</h2>
+      <span class="close" onclick="fecharModalComentarios()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div id="listaComentarios"></div>
+      <div class="form-group" style="margin-top: 1rem;">
+        <textarea id="novoComentario" placeholder="Adicionar comentário..." class="textarea-task"></textarea>
+        <button id="btnAdicionarComentario" class="btn btn-primary">Enviar Comentário</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const projetoId = <%= projeto.id %>;
+  const usuarioId = <%= usuario.id %>;
+</script>
+<script src="/js/projeto-tarefas.js"></script>

@@ -1,6 +1,7 @@
-// models/queries.js
+// models/queries.js - Promise-based SQLite3 wrapper para operações async/await
 const openDb = require('../db');
 
+// Executa SELECT que retorna múltiplas linhas
 function all(query, params = []) {
   const db = openDb();
   return new Promise((resolve, reject) => {
@@ -12,6 +13,7 @@ function all(query, params = []) {
   });
 }
 
+// Executa SELECT que retorna uma única linha
 function get(query, params = []) {
   const db = openDb();
   return new Promise((resolve, reject) => {
@@ -23,6 +25,7 @@ function get(query, params = []) {
   });
 }
 
+// Executa INSERT, UPDATE, DELETE com lastID e changes
 function run(query, params = []) {
   const db = openDb();
   return new Promise((resolve, reject) => {

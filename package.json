@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "init-db": "node db.js --init"
+    "init-db": "node db.js --init",
+    "reset-db": "node db.js --reset"
   },
   "dependencies": {
     "body-parser": "^1.20.2",

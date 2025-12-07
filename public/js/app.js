@@ -1,24 +1,25 @@
-let filtroAtual = 'todas';
+// app.js - Gerenciamento de tarefas com filtros (página única/simples)
+let filtroAtual = 'todas'; // Filtro ativo (todas, pendente, em_andamento, concluida)
 
-// Aguardar o DOM carregar
+// Inicializa listeners ao carregar página
 document.addEventListener('DOMContentLoaded', function() {
-  // Adicionar event listeners
+  // Listener para botão de adicionar
   const btnAdicionar = document.getElementById('btnAdicionarTarefa');
   if (btnAdicionar) {
     btnAdicionar.addEventListener('click', addTarefa);
   }
   
-  // Filtros
+  // Listeners para filtros de status
   document.querySelectorAll('.btn-filter').forEach(btn => {
     btn.addEventListener('click', function() {
       filtrarTarefas(this.dataset.filter);
     });
   });
   
-  // Carregar tarefas
   carregar();
 });
 
+// Carrega tarefas do projeto via API e exibe lista
 async function carregar() {
   try {
     const res = await fetch("/api/tarefas");
@@ -27,6 +28,7 @@ async function carregar() {
     const lista = document.getElementById("lista");
     lista.innerHTML = "";
 
+    // Aplica filtro ao array de tarefas
     const tarefasFiltradas = filtroAtual === 'todas' 
       ? tarefas 
       : tarefas.filter(t => t.status === filtroAtual);
@@ -36,6 +38,7 @@ async function carregar() {
       return;
     }
 
+    // Renderiza cada tarefa como card com badges e botões
     tarefasFiltradas.forEach(t => {
       const prioridadeClass = `prioridade-${t.prioridade}`;
       const statusClass = `status-${t.status}`;
@@ -66,7 +69,7 @@ async function carregar() {
         </div>
       `;
       
-      // Event listeners
+      // Listeners para select e botão
       const selectStatus = taskCard.querySelector('.select-status');
       selectStatus.addEventListener('change', function() {
         atualizarStatus(this.dataset.taskId, this.value);
@@ -85,6 +88,7 @@ async function carregar() {
   }
 }
 
+// Cria nova tarefa via API
 async function addTarefa() {
   const tituloEl = document.getElementById("titulo");
   const descricaoEl = document.getElementById("descricao");
@@ -122,6 +126,7 @@ async function addTarefa() {
       return;
     }
 
+    // Limpa campos e recarrega lista
     document.getElementById("titulo").value = "";
     document.getElementById("descricao").value = "";
     document.getElementById("prioridade").value = "media";
@@ -131,6 +136,7 @@ async function addTarefa() {
   }
 }
 
+// Atualiza status de uma tarefa via API PATCH
 async function atualizarStatus(id, novoStatus) {
   try {
     const res = await fetch(`/api/tarefas/${id}`, {
@@ -150,6 +156,7 @@ async function atualizarStatus(id, novoStatus) {
   }
 }
 
+// Exclui tarefa após confirmação via API DELETE
 async function remover(id) {
   if (!confirm("Deseja realmente excluir esta tarefa?")) {
     return;
@@ -169,10 +176,11 @@ async function remover(id) {
   }
 }
 
+// Filtra tarefas por status e recarrega exibição
 function filtrarTarefas(filtro) {
   filtroAtual = filtro;
   
-  // Atualizar botões ativos
+  // Atualiza botão ativo
   document.querySelectorAll('.btn-filter').forEach(btn => {
     btn.classList.remove('active');
   });
