@@ -664,12 +664,6 @@ Se você encontrou um bug ou tem sugestões de melhorias, abra uma issue ou pull
 
 ---
 
-## 📄 Licença
-
-Este projeto está sob licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
 ## 🎓 Conceitos Implementados
 
 ### Tecnologias Backend
@@ -708,18 +702,20 @@ Este projeto foi desenvolvido como trabalho prático integrador das disciplinas:
 
 | Disciplina | Conteúdo Principal |
 |-----------|-------------------|
-| **Desenvolvimento Web II** | Full-stack JavaScript, arquitetura MVC, Express.js |
-| **Banco de Dados** | Normalização SQL, foreign keys, queries, integridade referencial |
-| **Interface com Usuário** | Design responsivo, UX/UI, acessibilidade web |
+| **Desenvolvimento Web II** | Full-stack JavaScript, arquitetura MVC, Express.js, responsive design |
+| **Programação com Acesso a Banco de Dados** | Normalização SQL, foreign keys, queries, integridade referencial, CRUD operations |
 
 ---
 
+
 <div align="center">
 
-### 💜 Desenvolvido com dedicação e paixão por desenvolvimento web
 
-**Mateus Souza**  
+
+**Mateus Souza e Silva**  
+**Joel de Araújo Pereira Junior**
 Desenvolvimento Web II - 2025
+Programação com Acesso a Banco de Dados - 2025
 
 [⬆ Voltar ao topo](#-easy-tarefa)
 
