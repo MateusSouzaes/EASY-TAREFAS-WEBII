@@ -10,11 +10,7 @@ Sistema de gerenciamento de tarefas e projetos com arquitetura separada Web/API.
 ## 🚀 Início Rápido
 
 ```bash
-# Opção 1: Script automático
-.\iniciar.bat   # Windows CMD
-.\iniciar.ps1   # PowerShell
-
-# Opção 2: Manual
+# Via Terminal
 cd api && npm install && npm start    # Terminal 1 - Porta 3001
 cd web && npm install && npm start    # Terminal 2 - Porta 3000
 ```
@@ -34,7 +30,6 @@ cd web && npm install && npm start    # Terminal 2 - Porta 3000
 ├── api/           # REST API (C# .NET pattern)
 ├── web/           # Interface web (Express + EJS)
 ├── taskflow.db    # Banco SQLite
-└── iniciar.*      # Scripts de inicialização
 ```
 
 ---
