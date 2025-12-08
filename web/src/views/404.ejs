@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Página não encontrada</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .container-404 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .error-box {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 0;
+        }
+        .error-message {
+            font-size: 24px;
+            color: #333;
+            margin: 10px 0 20px;
+        }
+        .error-description {
+            color: #666;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        .error-button {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .error-button:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-404">
+        <div class="error-box">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-message">Página não encontrada</h2>
+            <p class="error-description">Desculpe, a página que você está procurando não existe.</p>
+            <a href="/" class="error-button">Voltar ao início</a>
+        </div>
+    </div>
+</body>
+</html>
